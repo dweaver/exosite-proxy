@@ -4,15 +4,14 @@
  */
 class Exosite {
 
-  constructor(apiServer, userToken) {
+  constructor(userToken, apiServer) {
     this.API_SERVER = apiServer || 'https://fleet-prototype-api.herokuapp.com';
-    this.name = name || 'Guest';
     // TODO: drop $ dependency
     $.ajaxSetup({
       beforeSend: function(xhr) {
         if (userToken) {
           xhr.setRequestHeader('Authorization',
-                'Bearer ' + localStorage.getItem('userToken'));
+                'Bearer ' + userToken);
         }
       }
     });
@@ -21,12 +20,12 @@ class Exosite {
   query(query, selection, options) {
     var deferred = $.Deferred();
      
-    devices = $.ajax(
-        API_SERVER + '/api/v1/Devices',
+    var devices = $.ajax(
+        this.API_SERVER + '/api/v1/Devices',
         {
           data: {
-            query: query,
-            select: selection
+            query: JSON.stringify(query),
+            select: selection.join(',')
           }
         })
       .done(function(data) {
@@ -41,7 +40,7 @@ class Exosite {
   rpc(auth, calls) {
     var deferred = $.Deferred();
     results = $.ajax(
-      API_SERVER + '/onep:v1/rpc/process',
+      this.API_SERVER + '/onep:v1/rpc/process',
       {
         type: 'POST',
         processData: false,

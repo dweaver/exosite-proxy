@@ -14,8 +14,17 @@ Javascript library for [Exosite](http://exosite.com)'s fleet management APIs, cu
 </head>
 ```
 
-- TODO
+- use the library by requiring it
 
+```
+<script>
+var fleet = require('exosite-fleet');
+var exo = new fleet('API TOKEN');
+exo.query({domain: "cloudy.exosite.com"}, ["model","name","sn"]).then(function(devices) {
+  console.log(devices);
+});
+</script>
+```
 
 
 ## Build for distribution
@@ -24,6 +33,6 @@ To build the build, do this:
 
 ```
 $ npm build
-$ browserify lib/index.js lib/Exosite.js -o ./exosite-fleet.js
+npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-fleet -o ../exosite-fleet.js && cd .. && cp ./exosite-fleet.js ../fleet/scripts/exosite-fleet.js
 $ uglifyjs exosite-fleet.js -o exosite-fleet.min.js
 ```

@@ -6,7 +6,9 @@
   "author": "Dan Weaver",
   "license": "MIT",
   "main": "lib/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "underscore": "^1.8.3"
+  },
   "devDependencies": {
     "autoprefixer-core": "^5.2.1",
     "babel": "^5.8.3",
