@@ -24,4 +24,6 @@ To build the build, do this:
 
 ```
 $ npm build
+$ browserify lib/index.js lib/Exosite.js -o ./exosite-fleet.js
+$ uglifyjs exosite-fleet.js -o exosite-fleet.min.js
 ```
