@@ -1,0 +1,24 @@
+{
+  "name": "exosite-fleet",
+  "main": "exosite-fleet.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/dweaver/exosite-fleet",
+  "authors": [
+    "Dan Weaver <danweaver@exosite.com>"
+  ],
+  "description": "Exosite Fleet API Library (pre-release)",
+  "keywords": [
+    "Exosite",
+    "IoT",
+    "Fleet",
+    "admin"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
