@@ -29,21 +29,41 @@ var Exosite = (function () {
   }
 
   _createClass(Exosite, [{
-    key: 'query',
-    value: function query(_query, selection, options) {
+    key: 'q',
+    value: function q(what, query, selection, options) {
       var deferred = $.Deferred();
 
-      var devices = $.ajax(this.API_SERVER + '/api/v1/Devices', {
-        data: {
-          query: JSON.stringify(_query),
-          select: selection.join(',')
+      var data = {
+        query: JSON.stringify(query)
+      };
+      if (selection) {
+        data.select = selection.join(',');
+      }
+      if (options) {
+        if (options.limit) {
+          data.limit = options.limit;
         }
-      }).done(function (data) {
+        if (options.sort) {
+          data.sort = options.sort;
+        }
+      }
+
+      var devices = $.ajax(this.API_SERVER + '/api/v1/' + what, { data: data }).done(function (data) {
         deferred.resolve(data);
       }).fail(function (err) {
         deferred.reject(err);
       });
       return deferred.promise();
+    }
+  }, {
+    key: 'queryDevices',
+    value: function queryDevices(query, selection, options) {
+      return this.q('Devices', query, selection, options);
+    }
+  }, {
+    key: 'queryUsers',
+    value: function queryUsers(query, selection, options) {
+      return this.q('Users', query, selection, options);
     }
   }, {
     key: 'rpc',

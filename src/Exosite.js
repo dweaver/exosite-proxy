@@ -10,31 +10,48 @@ class Exosite {
     $.ajaxSetup({
       beforeSend: function(xhr) {
         if (userToken) {
-          xhr.setRequestHeader('Authorization',
-                'Bearer ' + userToken);
+          xhr.setRequestHeader('Authorization', 'Bearer ' + userToken);
         }
       }
     });
   }
 
-  query(query, selection, options) {
+  q(what, query, selection, options) {
     var deferred = $.Deferred();
+
+    var data = {
+      query: JSON.stringify(query)
+    };
+    if (selection) {
+      data.select = selection.join(',');
+    }
+    if (options) {
+      if (options.limit) {
+        data.limit = options.limit;
+      }
+      if (options.sort) {
+        data.sort = options.sort;
+      }
+    }
      
     var devices = $.ajax(
-        this.API_SERVER + '/api/v1/Devices',
-        {
-          data: {
-            query: JSON.stringify(query),
-            select: selection.join(',')
-          }
-        })
-      .done(function(data) {
-        deferred.resolve(data);
-      })
-      .fail(function(err) {
-        deferred.reject(err);
-      });
+      this.API_SERVER + '/api/v1/' + what,
+      { data: data })
+    .done(function(data) {
+      deferred.resolve(data);
+    })
+    .fail(function(err) {
+      deferred.reject(err);
+    });
     return deferred.promise();
+  }
+
+  queryDevices(query, selection, options) {
+    return this.q('Devices', query, selection, options);
+  }
+
+  queryUsers(query, selection, options) {
+    return this.q('Users', query, selection, options);
   }
 
   rpc(auth, calls) {

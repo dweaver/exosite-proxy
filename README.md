@@ -10,6 +10,13 @@ Add library and dependencies to your HTML. The library is dependent on jQuery (f
 <head>
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="http://cdn.auth0.com/w2/auth0-4.js"></script>
+    <script>
+      authProvider.init({
+        domain: 'exositeapp.auth0.com',
+        clientID: 'dcnod3KP9Hn40y0VWbmKLVRODQ9I12xv',
+        loginUrl: '/login'
+      });
+    </script>
     <script src="https://rawgit.com/dweaver/exosite-fleet/master/exosite-fleet.js"></script>
 </head>
 ```
