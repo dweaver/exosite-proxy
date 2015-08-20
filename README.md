@@ -26,7 +26,7 @@ Use the library by requiring it:
 <script>
 var fleet = require('exosite-fleet');
 var exo = new fleet('API TOKEN');
-exo.query({domain: "cloudy.exosite.com"}, ["model","name","sn"]).then(function(devices) {
+exo.queryDevices({domain: "cloudy.exosite.com"}, ["model","name","sn"]).then(function(devices) {
   console.log(devices);
 });
 </script>
