@@ -13,15 +13,14 @@ Add library and dependencies to your HTML. The library is dependent on jQuery (f
     <script>
       authProvider.init({
         domain: 'exositeapp.auth0.com',
-        clientID: 'dcnod3KP9Hn40y0VWbmKLVRODQ9I12xv',
-        loginUrl: '/login'
+        clientID: 'dcnod3KP9Hn40y0VWbmKLVRODQ9I12xv'
       });
     </script>
     <script src="https://rawgit.com/dweaver/exosite-fleet/master/exosite-fleet.js"></script>
 </head>
 ```
 
-Use the library by requiring it
+Use the library by requiring it:
 
 ```
 <script>
@@ -33,13 +32,23 @@ exo.query({domain: "cloudy.exosite.com"}, ["model","name","sn"]).then(function(d
 </script>
 ```
 
+For a working example, look here: https://github.com/dweaver/exosite-fleet-example
+
 
 ## Build for distribution
 
-To build the build, do this:
+To build, do this:
 
 ```
 $ npm build
 npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-fleet -o ../exosite-fleet.js && cd .. && cp ./exosite-fleet.js ../fleet/scripts/exosite-fleet.js
 $ uglifyjs exosite-fleet.js -o exosite-fleet.min.js
+```
+
+To distribute, do this:
+
+```
+$ git tag <version, e.g. 0.1.0>
+$ git push origin <version, e.g. 0.1.0>
+$ npm publish
 ```
