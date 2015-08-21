@@ -40,12 +40,11 @@ For a working example, look here: https://github.com/dweaver/exosite-fleet-examp
 To build, do this:
 
 ```
-$ npm build
-npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-fleet -o ../exosite-fleet.js && cd .. && cp ./exosite-fleet.js ../fleet/scripts/exosite-fleet.js
+$ npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-fleet -o ../exosite-fleet.js && cd .. && cp ./exosite-fleet.js ../fleet/scripts/exosite-fleet.js
 $ uglifyjs exosite-fleet.js -o exosite-fleet.min.js
 ```
 
-To distribute, do this:
+To distribute, update version number in package.json and bower.json. Then do this:
 
 ```
 $ git tag <version, e.g. 0.1.0>

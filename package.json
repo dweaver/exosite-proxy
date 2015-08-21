@@ -1,6 +1,6 @@
 {
   "name": "exosite-fleet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Exosite fleet management API wrapper",
   "repository": "dweaver/exosite-fleet",
   "author": "Dan Weaver",

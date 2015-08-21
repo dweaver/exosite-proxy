@@ -66,6 +66,11 @@ var Exosite = (function () {
       return this.q('Users', query, selection, options);
     }
   }, {
+    key: 'queryDomains',
+    value: function queryDomains(query, selection, options) {
+      return this.q('Domains', query, selection, options);
+    }
+  }, {
     key: 'rpc',
     value: function rpc(auth, calls) {
       return _HttpJs2['default'].post('/onep:v1/rpc/process', { auth: auth, calls: calls });

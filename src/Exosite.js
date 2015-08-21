@@ -40,6 +40,10 @@ class Exosite {
     return this.q('Users', query, selection, options);
   }
 
+  queryDomains(query, selection, options) {
+    return this.q('Domains', query, selection, options);
+  }
+
   rpc(auth, calls) {
     return Http.post('/onep:v1/rpc/process', { auth: auth, calls: calls });
   }
