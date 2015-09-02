@@ -4,7 +4,7 @@ Javascript library for [Exosite](http://exosite.com)'s fleet management APIs, cu
 
 ## Usage
 
-Add library and dependencies to your HTML. The library is dependent on jQuery (for ajax) and Auth0 (for tokens). The jQuery dependency is expected to be dropped.
+Add library and dependencies to your HTML. The library is dependent on Auth0 (for tokens). The jQuery dependency is expected to be dropped.
 
 ```
 <head>

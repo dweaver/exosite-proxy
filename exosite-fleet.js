@@ -1329,6 +1329,8 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
+},{}],"exosite-fleet":[function(require,module,exports){
+module.exports=require('FXviCq');
 },{}],"FXviCq":[function(require,module,exports){
 'use strict';
 
@@ -1389,6 +1391,7 @@ var Exosite = (function () {
           if (res.ok && !err) {
             resolve(res.body);
           } else {
+            console.log('reject', res.text);
             reject(res.text);
           }
         });
@@ -1430,6 +1433,4 @@ var Exosite = (function () {
 exports['default'] = Exosite;
 module.exports = exports['default'];
 
-},{"../node_modules/superagent/lib/client.js":1}],"exosite-fleet":[function(require,module,exports){
-module.exports=require('FXviCq');
-},{}]},{},["FXviCq"])
+},{"../node_modules/superagent/lib/client.js":1}]},{},["FXviCq"])
