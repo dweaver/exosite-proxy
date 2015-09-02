@@ -16,24 +16,40 @@ class Http {
 
   }
 
+  /**
+   * URL encode an object
+   */
+  param(object) {
+      var encodedString = '';
+      for (var prop in object) {
+          if (object.hasOwnProperty(prop)) {
+              if (encodedString.length > 0) {
+                  encodedString += '&';
+              }
+              encodedString += encodeURI(prop + '=' + object[prop]);
+          }
+      }
+      return encodedString;
+  }
+
   get(path, data) {
     var deferred = $.Deferred();
-    var devices = $.ajax(
-      this.apiServer + path,
-      { data: data })
-    .done(function(data) {
-      deferred.resolve(data);
-    })
-    .fail(function(err) {
-      deferred.reject(err);
-    });
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', path + this.param(data));
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        deferred.resolve(xhr.responseText);
+      } else {
+        deferred.reject(xhr.status, xhr);
+      }
+    };
     return deferred.promise();
   }
 
   post(path, data) {
     var deferred = $.Deferred();
     results = $.ajax(
-      this.API_SERVER + path,
+     this.API_SERVER + path,
       {
         type: 'POST',
         processData: false,
