@@ -1,4 +1,4 @@
-require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -1329,9 +1329,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],"exosite-fleet":[function(require,module,exports){
-module.exports=require('FXviCq');
-},{}],"FXviCq":[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -1417,7 +1415,7 @@ var Exosite = (function () {
     value: function rpc(auth, calls) {
       var that = this;
       return new Promise(function (resolve, reject) {
-        _node_modulesSuperagentLibClientJs2['default'].post(that.apiServer + '/onep:v1/rpc/process').send({ auth: auth, calls: calls }).end(function (err, res) {
+        _node_modulesSuperagentLibClientJs2['default'].post(that.apiServer + '/onep:v1/rpc/process').set('Authorization', 'Bearer ' + that.userToken).send({ auth: auth, calls: calls }).end(function (err, res) {
           if (res.ok && !err) {
             resolve(res.body);
           } else {
@@ -1434,4 +1432,4 @@ var Exosite = (function () {
 exports['default'] = Exosite;
 module.exports = exports['default'];
 
-},{"../node_modules/superagent/lib/client.js":1}]},{},["FXviCq"])
+},{"../node_modules/superagent/lib/client.js":1}]},{},[4]);

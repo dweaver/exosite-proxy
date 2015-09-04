@@ -64,6 +64,7 @@ class Exosite {
     return new Promise(function(resolve, reject) {
       request
         .post(that.apiServer + '/onep:v1/rpc/process')
+        .set('Authorization', 'Bearer ' + that.userToken)
         .send({ auth: auth, calls: calls })
         .end(function(err, res) {
           if (res.ok && !err) {
