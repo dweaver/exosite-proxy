@@ -60,6 +60,7 @@ class Exosite {
   }
 
   rpc(auth, calls) {
+    let that = this;
     return new Promise(function(resolve, reject) {
       request
         .post(that.apiServer + '/onep:v1/rpc/process')
