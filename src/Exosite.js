@@ -65,14 +65,18 @@ class Exosite {
       request
         .post(that.apiServer + '/onep:v1/rpc/process')
         .set('Authorization', 'Bearer ' + that.userToken)
+        .set('Accept', 'application/json')
+        .set('Content-Type', 'application/json')
         .send({ auth: auth, calls: calls })
         .end(function(err, res) {
+          console.log(err, res);
           if (res.ok && !err) {
             resolve(res.body);    
           } else {
             reject(res.text);
           }
         });
+      console.log(' got here 2?');
     });
   }
 
