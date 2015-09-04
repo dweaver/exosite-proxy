@@ -1391,7 +1391,6 @@ var Exosite = (function () {
           if (res.ok && !err) {
             resolve(res.body);
           } else {
-            console.log('reject', res.text);
             reject(res.text);
           }
         });
@@ -1418,14 +1417,12 @@ var Exosite = (function () {
       var that = this;
       return new Promise(function (resolve, reject) {
         _node_modulesSuperagentLibClientJs2['default'].post(that.apiServer + '/onep:v1/rpc/process').set('Authorization', 'Bearer ' + that.userToken).set('Accept', 'application/json').set('Content-Type', 'application/json').send({ auth: auth, calls: calls }).end(function (err, res) {
-          console.log(err, res);
           if (res.ok && !err) {
-            resolve(res.body);
+            resolve(res.text);
           } else {
-            reject(res.text);
+            reject(err);
           }
         });
-        console.log(' got here 2?');
       });
     }
   }]);

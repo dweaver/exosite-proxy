@@ -1,3 +1,7 @@
+## 0.1.7 (2015-09-03)
+
+- more debugging
+
 ## 0.1.6 (2015-09-03)
 
 - debug version

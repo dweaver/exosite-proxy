@@ -40,7 +40,6 @@ class Exosite {
           if (res.ok && !err) {
             resolve(res.body);    
           } else {
-            console.log('reject', res.text);
             reject(res.text);
           }
         });
@@ -69,14 +68,12 @@ class Exosite {
         .set('Content-Type', 'application/json')
         .send({ auth: auth, calls: calls })
         .end(function(err, res) {
-          console.log(err, res);
           if (res.ok && !err) {
-            resolve(res.body);    
+            resolve(res.text);    
           } else {
-            reject(res.text);
+            reject(err);
           }
         });
-      console.log(' got here 2?');
     });
   }
 
