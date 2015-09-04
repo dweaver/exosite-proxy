@@ -1415,6 +1415,7 @@ var Exosite = (function () {
   }, {
     key: 'rpc',
     value: function rpc(auth, calls) {
+      var that = this;
       return new Promise(function (resolve, reject) {
         _node_modulesSuperagentLibClientJs2['default'].post(that.apiServer + '/onep:v1/rpc/process').send({ auth: auth, calls: calls }).end(function (err, res) {
           if (res.ok && !err) {
