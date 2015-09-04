@@ -1,7 +1,7 @@
 {
   "name": "exosite-fleet",
   "main": "exosite-fleet.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/dweaver/exosite-fleet",
   "authors": [
     "Dan Weaver <danweaver@exosite.com>"
