@@ -1,11 +1,11 @@
 {
-  "name": "exosite-fleet",
-  "version": "0.1.7",
-  "description": "Exosite fleet management API wrapper",
-  "repository": "dweaver/exosite-fleet",
+  "name": "exosite-proxy",
+  "version": "0.0.0",
+  "description": "Exosite Proxy API wrapper",
+  "repository": "dweaver/exosite-proxy",
   "author": "Dan Weaver",
   "license": "MIT",
-  "main": "exosite-fleet.js",
+  "main": "exosite-proxy.js",
   "dependencies": {
     "emitter": "0.0.1",
     "reduce": "^1.0.1",
@@ -46,6 +46,6 @@
     "test": "mocha test --compilers js:babel/register",
     "build": "babel-node tools/build",
     "start": "babel-node tools/serve",
-    "buildall": "npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-fleet -o ../exosite-fleet.js && cd .. && uglifyjs exosite-fleet.js -o exosite-fleet.min.js"
+    "buildall": "npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-proxy -o ../exosite-proxy.js && cd .. && uglifyjs exosite-proxy.js -o exosite-proxy.min.js"
   }
 }

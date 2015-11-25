@@ -10,9 +10,14 @@ var reduce = require('reduce');
  * Root reference for iframes.
  */
 
-var root = 'undefined' == typeof window
-  ? (this || self)
-  : window;
+var root;
+if (typeof window !== 'undefined') { // Browser window
+  root = window;
+} else if (typeof self !== 'undefined') { // Web Worker
+  root = self;
+} else { // Other environments
+  root = this;
+}
 
 /**
  * Noop.
@@ -348,6 +353,20 @@ Response.prototype.setHeaderProperties = function(header){
 };
 
 /**
+ * Force given parser
+ * 
+ * Sets the body parser no matter type.
+ * 
+ * @param {Function}
+ * @api public
+ */
+
+Response.prototype.parse = function(fn){
+  this.parser = fn;
+  return this;
+};
+
+/**
  * Parse the given body `str`.
  *
  * Used for auto-parsing of bodies. Parsers
@@ -359,7 +378,7 @@ Response.prototype.setHeaderProperties = function(header){
  */
 
 Response.prototype.parseBody = function(str){
-  var parse = request.parse[this.type];
+  var parse = this.parser || request.parse[this.type];
   return parse && str && (str.length || str instanceof Object)
     ? parse(str)
     : null;
@@ -395,7 +414,7 @@ Response.prototype.setStatusProperties = function(status){
   var type = status / 100 | 0;
 
   // status / class
-  this.status = status;
+  this.status = this.statusCode = status;
   this.statusType = type;
 
   // basics
@@ -1329,8 +1348,6 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],"exosite-fleet":[function(require,module,exports){
-module.exports=require('FXviCq');
 },{}],"FXviCq":[function(require,module,exports){
 'use strict';
 
@@ -1349,13 +1366,13 @@ var _node_modulesSuperagentLibClientJs = require('../node_modules/superagent/lib
 var _node_modulesSuperagentLibClientJs2 = _interopRequireDefault(_node_modulesSuperagentLibClientJs);
 
 /**
- * Exosite Fleet API Library
+ * Exosite Proxy API Library
  * Copyright (c) Exosite | The MIT License
  */
 
 var Exosite = (function () {
   function Exosite(userToken) {
-    var apiServer = arguments.length <= 1 || arguments[1] === undefined ? 'https://fleet-prototype-api.herokuapp.com' : arguments[1];
+    var apiServer = arguments.length <= 1 || arguments[1] === undefined ? 'https://api.exositeapp.com' : arguments[1];
 
     _classCallCheck(this, Exosite);
 
@@ -1363,55 +1380,7 @@ var Exosite = (function () {
     this.apiServer = apiServer;
   }
 
-  /**
-   * General query function for fleet API's query endpoints
-   */
-
   _createClass(Exosite, [{
-    key: 'q',
-    value: function q(what, query, selection, options) {
-      var that = this;
-      var params = {
-        query: JSON.stringify(query)
-      };
-      if (selection) {
-        params.select = selection.join(',');
-      }
-      if (options) {
-        if (options.limit) {
-          params.limit = options.limit;
-        }
-        if (options.sort) {
-          params.sort = options.sort;
-        }
-      }
-
-      return new Promise(function (resolve, reject) {
-        _node_modulesSuperagentLibClientJs2['default'].get(that.apiServer + '/api/v1/' + what).query(params).set('Authorization', 'Bearer ' + that.userToken).end(function (err, res) {
-          if (res.ok && !err) {
-            resolve(res.body);
-          } else {
-            reject(res.text);
-          }
-        });
-      });
-    }
-  }, {
-    key: 'queryDevices',
-    value: function queryDevices(query, selection, options) {
-      return this.q('Devices', query, selection, options);
-    }
-  }, {
-    key: 'queryUsers',
-    value: function queryUsers(query, selection, options) {
-      return this.q('Users', query, selection, options);
-    }
-  }, {
-    key: 'queryDomains',
-    value: function queryDomains(query, selection, options) {
-      return this.q('Domains', query, selection, options);
-    }
-  }, {
     key: 'rpc',
     value: function rpc(auth, calls) {
       var that = this;
@@ -1433,4 +1402,6 @@ var Exosite = (function () {
 exports['default'] = Exosite;
 module.exports = exports['default'];
 
-},{"../node_modules/superagent/lib/client.js":1}]},{},["FXviCq"])
+},{"../node_modules/superagent/lib/client.js":1}],"exosite-proxy":[function(require,module,exports){
+module.exports=require('FXviCq');
+},{}]},{},["FXviCq"])

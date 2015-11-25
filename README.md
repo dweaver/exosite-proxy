@@ -1,6 +1,6 @@
-# Exosite Fleet API
+# Exosite Proxy API
 
-Javascript library for [Exosite](http://exosite.com)'s fleet management APIs, currently in beta.
+Javascript library for [Exosite](http://exosite.com)'s proxy API, currently in beta.
 
 ## Usage
 
@@ -16,7 +16,7 @@ Add library and dependencies to your HTML. The library is dependent on Auth0 (fo
         clientID: 'dcnod3KP9Hn40y0VWbmKLVRODQ9I12xv'
       });
     </script>
-    <script src="https://rawgit.com/dweaver/exosite-fleet/master/exosite-fleet.js"></script>
+    <script src="https://rawgit.com/dweaver/exosite-proxy/master/exosite-proxy.js"></script>
 </head>
 ```
 
@@ -24,15 +24,15 @@ Use the library by requiring it:
 
 ```
 <script>
-var fleet = require('exosite-fleet');
-var exo = new fleet('API TOKEN');
+var proxy = require('exosite-proxy');
+var exo = new proxy('API TOKEN');
 exo.queryDevices({domain: "cloudy.exosite.com"}, ["model","name","sn"]).then(function(devices) {
   console.log(devices);
 });
 </script>
 ```
 
-For a working example, look here: https://github.com/dweaver/exosite-fleet-example
+For a working example, look here: https://github.com/dweaver/exosite-proxy-example
 
 
 ## Build for distribution
@@ -40,13 +40,13 @@ For a working example, look here: https://github.com/dweaver/exosite-fleet-examp
 To build, do this:
 
 ```
-$ npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-fleet -o ../exosite-fleet.js && cd ..
-$ uglifyjs exosite-fleet.js -o exosite-fleet.min.js
+$ npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-proxy -o ../exosite-proxy.js && cd ..
+$ uglifyjs exosite-proxy.js -o exosite-proxy.min.js
 ```
 
 For debugging, you may want to copy it into a different project:
 ```
-$ npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-fleet -o ../exosite-fleet.js && cd .. && cp ./exosite-fleet.js ../fleet/scripts/exosite-fleet.js
+$ npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-proxy -o ../exosite-proxy.js && cd .. && cp ./exosite-proxy.js ../proxy/scripts/exosite-proxy.js
 ```
 
 To distribute, update version number in package.json and bower.json. Then do this:

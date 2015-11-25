@@ -1,5 +1,5 @@
 /**
- * Exosite Fleet library tests
+ * Exosite proxy library tests
  */
 
 import { describe, it } from 'mocha';
@@ -19,7 +19,7 @@ describe('Exosite', () => {
     let server = 'bar';
     let exosite = new Exosite(token);
     expect(exosite.userToken).to.be.equal(token);
-    expect(exosite.apiServer).to.be.equal('https://fleet-prototype-api.herokuapp.com');
+    expect(exosite.apiServer).to.be.equal('https://proxy.exositeapp.com');
     exosite = new Exosite(token, server);
     expect(exosite.apiServer).to.be.equal(server);
   });
