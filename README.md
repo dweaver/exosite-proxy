@@ -40,19 +40,19 @@ For a working example, look here: https://github.com/dweaver/exosite-proxy-examp
 To build, do this:
 
 ```
-$ npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-proxy -o ../exosite-proxy.js && cd ..
-$ uglifyjs exosite-proxy.js -o exosite-proxy.min.js
+$ make build
 ```
 
 For debugging, you may want to copy it into a different project:
 ```
-$ npm build && cd src && browserify Exosite.js -t babelify -r ./Exosite:exosite-proxy -o ../exosite-proxy.js && cd .. && cp ./exosite-proxy.js ../proxy/scripts/exosite-proxy.js
+$ make build
+$ cp _build/exosite-proxy.js ../proxy/scripts/exosite-proxy.js
 ```
 
 To distribute, update version number in package.json and bower.json. Then do this:
 
 ```
-$ git tag <version, e.g. 0.1.0>
-$ git push origin <version, e.g. 0.1.0>
-$ npm publish
+$ make publish
 ```
+
+This will automatically tag the release, push to master, and call `npm publish`
