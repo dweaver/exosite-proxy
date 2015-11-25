@@ -8,12 +8,11 @@ build:
 	mkdir -p dist
 	npm install
 	npm build
-	browserify src/Exosite.js -t babelify -o _build/exosite-proxy.js
-	uglifyjs _build/exosite-proxy.js -o dist/exosite-proxy.min.js
+	browserify src/Exosite.js -t babelify -r ./src/Exosite:exosite-proxy -o exosite-proxy.js
+	uglifyjs exosite-proxy.js -o exosite-proxy.min.js
 
 clean:
-	rm -rf _build
-	rm -rf dist
+	rm exosite-proxy.js exosite-proxy.min.js
 
 publish:
 	cat package.json | jq .version | xargs git tag
