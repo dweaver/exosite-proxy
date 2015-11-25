@@ -4,11 +4,9 @@ SHELL := /bin/bash
 .PHONY: clean
 
 build:
-	mkdir -p _build
-	mkdir -p dist
 	npm install
 	npm build
-	browserify src/Exosite.js -t babelify -r ./src/Exosite:exosite-proxy -o exosite-proxy.js
+	browserify src/index.js -t babelify -o exosite-proxy.js
 	uglifyjs exosite-proxy.js -o exosite-proxy.min.js
 
 clean:

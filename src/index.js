@@ -4,5 +4,9 @@
  */
 
 import Exosite from './Exosite.js';
+import ApiService from './ApiService.js';
 
-export default { Exosite };
+window.Exosite = Exosite;
+window.ApiService = ApiService;
+
+export default { Exosite, ApiService };
