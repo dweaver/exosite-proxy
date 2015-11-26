@@ -40,9 +40,8 @@ class ApiService {
             this.buildRequest()
                 .send(requestObj)
                 .end((err, res) => {
-                    console.log(err, res);
                     if (res.ok && !err) {
-                        resolve(res.text);
+                        resolve(JSON.parse(res.text));
                     } else {
                         reject(err);
                     }
@@ -73,8 +72,8 @@ class ApiService {
     }
 
     // Helper function which retrieves device metadata after getting a listing of device clients
-    getDeviceInfo(response) {
-        var clients = response.data[0].result.client;
+    getDeviceInfo(data) {
+        var clients = data[0].result.client;
         if (clients.length === 0) {
             return [];
         } else {
@@ -83,9 +82,9 @@ class ApiService {
                 return { procedure: 'info', arguments: [client, attrs] };
             });
             return this.rpc(calls).then(
-                (response) => {
-                    var zipped    = _.zip(response.data, clients);
-                    response.data = _.map(zipped, (tuple) => {
+                (data) => {
+                    var zipped    = _.zip(data, clients);
+                    data = _.map(zipped, (tuple) => {
                         var device = tuple[0].result;
                         device['client_id'] = tuple[1];
                         if (device.description.meta) {
@@ -95,7 +94,7 @@ class ApiService {
                         }
                         return device;
                     });
-                    return response;
+                    return data;
                 },
                 (response) => {
                     console.log('error', response);
@@ -104,16 +103,16 @@ class ApiService {
         }
     }
 
-    getDeviceChildren(response) {
-        if (response && response.data) {
-            var calls = _.map(response.data, (device) => {
+    getDeviceChildren(data) {
+        if (data) {
+            var calls = _.map(data, (device) => {
                 var call = {
                     procedure: 'listing',
                     arguments: [{'alias': ''}, ['dataport', 'datarule', 'dispatch', 'client'], {}]
                 };
                 return this.rpc(device['client_id'], [call])
-                        .then((r) => {
-                                var children = r.data[0].result;
+                        .then((data) => {
+                                var children = data[0].result;
                                 return _.merge(device, children);
                             },
                             (r) => { console.log(r); });
@@ -171,21 +170,26 @@ class ApiService {
             };
         });
         var requests = _.map(devicesWithRids, (device) => {
-        var calls = _.map(device.rids, (rid) => {
-            var infoAttrs = {
-                "description": true, "key": true, "tags": true, "basic": true, "subscribers": true, "shares": true, "aliases": true
-            };
-            return [{
-                procedure: 'info',
-                arguments: [rid, infoAttrs]
-            }, {
-                procedure: 'read',
-                arguments: [rid, {limit: 1}]
-            }];
-        });
-        return this.rpc(device.cik, _.flatten(calls))
-                   .then((r) => { return this.mapReads(device.device, device.rids, r.data); },
-                         (r) => { console.log('clientReadRequestError', r); });
+            var calls = _.map(device.rids, (rid) => {
+                var infoAttrs = {
+                    "description": true, "key": true, "tags": true, "basic": true, "subscribers": true, "shares": true, "aliases": true
+                };
+                return [{
+                    procedure: 'info',
+                    arguments: [rid, infoAttrs]
+                }, {
+                    procedure: 'read',
+                    arguments: [rid, {limit: 1}]
+                }];
+            });
+            var flattenedCalls = _.flatten(calls);
+            if (flattenedCalls.length) {
+                return this.rpc(device.cik, flattenedCalls)
+                        .then((r) => { return this.mapReads(device.device, device.rids, r.data); },
+                                (r) => { console.log('clientReadRequestError', r); });
+            } else {
+                return new Promise((resolve, reject) => { resolve(this.mapReads(device.device, device.rids, [])); });
+            }
         });
         return Promise.all(requests);
     }
@@ -193,14 +197,14 @@ class ApiService {
     getDevices(onSuccess, onError) {
         var args = [{'alias': ''}, ['client'], { owned: true }];
         var calls = [
-        { procedure: 'listing', arguments: args }
+            { procedure: 'listing', arguments: args }
         ];
         return this.rpc(calls)
-                .then(this.getDeviceInfo, onError)
-                .then(this.getDeviceChildren, onError)
-                .then(this.getDeviceChildrenInfo, onError)
-                .then((devices) => { onSuccess(devices); },
-                      (err)     => { onError(err); });
+            .then(this.getDeviceInfo.bind(this), onError)
+            .then(this.getDeviceChildren.bind(this), onError)
+            .then(this.getDeviceChildrenInfo.bind(this), onError)
+            .then((devices) => { onSuccess(devices); },
+                  (err)     => { onError(err); });
     }
 }
 
