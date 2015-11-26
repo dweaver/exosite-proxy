@@ -13763,9 +13763,8 @@ var ApiService = (function () {
 
             return new Promise(function (resolve, reject) {
                 _this.buildRequest().send(requestObj).end(function (err, res) {
-                    console.log(err, res);
                     if (res.ok && !err) {
-                        resolve(res.text);
+                        resolve(JSON.parse(res.text));
                     } else {
                         reject(err);
                     }
@@ -13799,8 +13798,8 @@ var ApiService = (function () {
         // Helper function which retrieves device metadata after getting a listing of device clients
     }, {
         key: 'getDeviceInfo',
-        value: function getDeviceInfo(response) {
-            var clients = response.data[0].result.client;
+        value: function getDeviceInfo(data) {
+            var clients = data[0].result.client;
             if (clients.length === 0) {
                 return [];
             } else {
@@ -13808,9 +13807,9 @@ var ApiService = (function () {
                 var calls = _.map(clients, function (client) {
                     return { procedure: 'info', arguments: [client, attrs] };
                 });
-                return this.rpc(calls).then(function (response) {
-                    var zipped = _.zip(response.data, clients);
-                    response.data = _.map(zipped, function (tuple) {
+                return this.rpc(calls).then(function (data) {
+                    var zipped = _.zip(data, clients);
+                    data = _.map(zipped, function (tuple) {
                         var device = tuple[0].result;
                         device['client_id'] = tuple[1];
                         if (device.description.meta) {
@@ -13820,7 +13819,7 @@ var ApiService = (function () {
                         }
                         return device;
                     });
-                    return response;
+                    return data;
                 }, function (response) {
                     console.log('error', response);
                 });
@@ -13828,17 +13827,17 @@ var ApiService = (function () {
         }
     }, {
         key: 'getDeviceChildren',
-        value: function getDeviceChildren(response) {
+        value: function getDeviceChildren(data) {
             var _this3 = this;
 
-            if (response && response.data) {
-                var calls = _.map(response.data, function (device) {
+            if (data) {
+                var calls = _.map(data, function (device) {
                     var call = {
                         procedure: 'listing',
                         arguments: [{ 'alias': '' }, ['dataport', 'datarule', 'dispatch', 'client'], {}]
                     };
-                    return _this3.rpc(device['client_id'], [call]).then(function (r) {
-                        var children = r.data[0].result;
+                    return _this3.rpc(device['client_id'], [call]).then(function (data) {
+                        var children = data[0].result;
                         return _.merge(device, children);
                     }, function (r) {
                         console.log(r);
@@ -13912,11 +13911,18 @@ var ApiService = (function () {
                         arguments: [rid, { limit: 1 }]
                     }];
                 });
-                return _this4.rpc(device.cik, _.flatten(calls)).then(function (r) {
-                    return _this4.mapReads(device.device, device.rids, r.data);
-                }, function (r) {
-                    console.log('clientReadRequestError', r);
-                });
+                var flattenedCalls = _.flatten(calls);
+                if (flattenedCalls.length) {
+                    return _this4.rpc(device.cik, flattenedCalls).then(function (r) {
+                        return _this4.mapReads(device.device, device.rids, r.data);
+                    }, function (r) {
+                        console.log('clientReadRequestError', r);
+                    });
+                } else {
+                    return new Promise(function (resolve, reject) {
+                        resolve(_this4.mapReads(device.device, device.rids, []));
+                    });
+                }
             });
             return Promise.all(requests);
         }
@@ -13925,7 +13931,7 @@ var ApiService = (function () {
         value: function getDevices(onSuccess, onError) {
             var args = [{ 'alias': '' }, ['client'], { owned: true }];
             var calls = [{ procedure: 'listing', arguments: args }];
-            return this.rpc(calls).then(this.getDeviceInfo, onError).then(this.getDeviceChildren, onError).then(this.getDeviceChildrenInfo, onError).then(function (devices) {
+            return this.rpc(calls).then(this.getDeviceInfo.bind(this), onError).then(this.getDeviceChildren.bind(this), onError).then(this.getDeviceChildrenInfo.bind(this), onError).then(function (devices) {
                 onSuccess(devices);
             }, function (err) {
                 onError(err);
