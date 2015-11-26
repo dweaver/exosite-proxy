@@ -1,6 +1,6 @@
 {
   "name": "exosite-proxy",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Exosite Proxy API wrapper",
   "repository": "dweaver/exosite-proxy",
   "author": "Dan Weaver",
